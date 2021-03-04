@@ -64,8 +64,8 @@ const certificate = fs.readFileSync('fullchain.pem', 'utf8');
 
 
 const credentials= {
- key: privateKey,
-	cert: certificate
+    key: privateKey,
+    cert: certificate
 }
  
 
@@ -75,8 +75,6 @@ app.get("/api/ping", function(req, res) {
 
 app.use('/', express.static(path.join(__dirname, '/html')));
 
- 
- 
 app.use(function(req, res, next) {
     res.header("Access-Control-Allow-Origin", "*"); // update to match the domain you will make the request from
     res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
@@ -102,6 +100,62 @@ app.post("/api/getWalletList",  asyncHandler(async (req, res, next) => {
     res.json({response:"ok", "message": "Correct", "doc": wallets.list})
 }));
 
+app.post("/api/checkUser",  asyncHandler(async (req, res, next) => {
+    var userName = req.body.userName;
+    var password = req.body.password;
+    var jsonHash = await checkUserDB(userName);
+    console.log('===============password checked  ' + jsonHash);
+    var str = JSON.stringify(jsonHash);
+    console.log(str);
+    var hash='1';
+	bcrypt.compare(password, hash, async function(err, result) {
+        console.log(result);
+    });
+
+    res.json({response:"ok", "message": "Correct" })
+}));
+
+app.post("/api/insertUser",  asyncHandler(async (req, res, next) => {
+    var userName = req.body.userName;
+    var password = req.body.password;
+
+    bcrypt.genSalt(saltRounds, async function(err, salt) {
+        bcrypt.hash(password, salt, async function(err, hash) {
+            // Store hash in your password DB.
+            console.log(hash);
+            var res = await insertUserDB(userName, hash);
+        });
+    });
+	
+    res.json({response:"ok", "message": "Correct" })
+}));
+
+async function insertUserDB(username, passwordhash) {
+
+    var sql = "insert into users (username, passwordhash) values ('" + username +"','" + passwordhash + "')";	
+    console.log(sql);
+    await pool.query(
+      sql,
+      async function(err, res)  {
+          console.log(err, res);
+	  pool.end;
+      }
+    );	    
+    return 0;
+
+}
+
+async function checkUserDB(username) {
+    console.log('check user db');
+    var sql = "select passwordhash from users where username = '" + username +"' ";
+    var res;
+    try { 
+	res = await pool.query(sql);
+	return res.rows;
+    } catch (err) {
+        console.log(err);
+    }
+}
 
 async function getwallet(wallet) {
 	 var result1;
