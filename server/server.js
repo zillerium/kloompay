@@ -104,16 +104,186 @@ app.post("/api/checkUser",  asyncHandler(async (req, res, next) => {
     var userName = req.body.userName;
     var password = req.body.password;
     var jsonHash = await checkUserDB(userName);
-    console.log('===============password checked  ' + jsonHash);
+    console.log('===============password checked  ' + jsonHash[0].password_hash);
     var str = JSON.stringify(jsonHash);
     console.log(str);
-    var hash='1';
-	bcrypt.compare(password, hash, async function(err, result) {
+    var hash=jsonHash[0].password_hash;
+
+    bcrypt.compare(password, hash, async function(err, result) {
         console.log(result);
     });
 
     res.json({response:"ok", "message": "Correct" })
 }));
+
+app.post("/api/checkAccount",  asyncHandler(async (req, res, next) => {
+    var userName = req.body.userName;
+    var sql =  "select user_name, balance, currency from account where user_name = '" + userName +"' ";
+console.log(sql)
+    var jsonHash = await checkDB( sql);
+    console.log('===============account checked  ' + jsonHash[0]);
+    var str = JSON.stringify(jsonHash);
+    console.log(str);
+    var o ={};
+    o[0]=[];
+    var data= {
+        userName: jsonHash[0].user_name,
+        balance: jsonHash[0].balance,
+        currency: jsonHash[0].currency,
+        dp: jsonHash[0].dp
+    }
+
+    res.json({response:"ok", "db": data })
+}));
+
+app.post("/api/insertAccount",  asyncHandler(async (req, res, next) => {
+    var userName = req.body.userName;
+    var balance = req.body.balance;
+    var dp = req.body.dp;
+    var currency = req.body.currency;
+
+    var sql = "insert into account (user_name, balance, dp, currency) values "+
+    "('" + userName +"'," + balance  + "," + dp +",'" + currency + "')";	
+   
+    console.log(sql);
+     await insertDB(  sql);
+  
+
+    res.json({response:"ok", "db": "account inserted" })
+}));
+
+app.post("/api/insertDeposit",  asyncHandler(async (req, res, next) => {
+    var userName = req.body.userName;
+    var amount = req.body.amount;
+    var dp = req.body.dp;
+    var currency = req.body.currency;
+    var fromWallet = req.body.from_wallet;
+
+    var sql = "insert into deposit (user_name, amount, dp, currency, from_wallet, deposit_date) values "+
+    "('" + userName +"'," + amount  + "," + dp +",'" + currency + "','" + fromWallet + "', NOW() )";	
+   
+    console.log(sql);
+     await insertDB(  sql);
+  
+
+    res.json({response:"ok", "db": "deposit inserted" })
+}));
+
+
+app.post("/api/checkDeposit",  asyncHandler(async (req, res, next) => {
+    var userName = req.body.userName;
+    var sql =  "select user_name, amount, dp, currency, from_wallet, deposit_date from deposit where user_name = '" + userName +"' ";
+
+    var jsonHash = await checkDB(sql);
+    console.log('===============deposit checked  ' + jsonHash[0]);
+    var str = JSON.stringify(jsonHash);
+    console.log(str);
+    var o ={};
+    o[0]=[];
+    var data= {
+        user_name: jsonHash[0].user_name,
+        amount: jsonHash[0].amount,
+        currency: jsonHash[0].currency,
+        dp: jsonHash[0].dp,
+        from_wallet: jsonHash[0].from_wallet,
+        deposit_date: jsonHash[0].deposit_date
+    }
+
+    res.json({response:"ok", "db": data })
+}));
+
+
+
+app.post("/api/insertExchange",  asyncHandler(async (req, res, next) => {
+    var userName = req.body.userName;
+    var fromAmount = req.body.fromAmount;
+    var fromDp = req.body.fromDp;
+    var fromCurrency = req.body.fromCurrency;
+    var toAmount = req.body.toAmount;
+    var toDp = req.body.toDp;
+    var toCurrency = req.body.toCurrency;
+
+    var sql = "insert into exchange (user_name, from_amount, from_dp, from_currency, to_amount, to_dp, to_currency, exchange_date) values "+
+    "('" + userName +"'," + fromAmount  + "," + fromDp +",'" + fromCurrency + "'," + toAmount  + "," + toDp +",'" + toCurrency   + "', NOW() )";	
+   
+    console.log(sql);
+     await insertDB(  sql);
+  
+
+    res.json({response:"ok", "db": "exchange inserted" })
+}));
+
+app.post("/api/checkExchange",  asyncHandler(async (req, res, next) => {
+    var userName = req.body.userName;
+    var sql =  "select    user_name, from_amount, from_dp, from_currency, to_amount, to_dp, to_currency,"+
+     "exchange_date from exchange where user_name = '" + userName +"' ";
+
+  console.log(sql)
+
+    var jsonHash = await checkDB(sql);
+    console.log('===============exchange checked  ' + jsonHash[0]);
+    var str = JSON.stringify(jsonHash);
+
+    console.log(str);
+    var o ={};
+    o[0]=[];
+    var data= {
+        user_name: jsonHash[0].user_name,
+        from_amount: jsonHash[0].from_amount,
+        from_currency: jsonHash[0].from_currency,
+        from_dp: jsonHash[0].from_dp,
+        to_amount: jsonHash[0].to_amount,
+        to_currency: jsonHash[0].to_currency,
+        to_dp: jsonHash[0].to_dp,
+        exchange_date: jsonHash[0].exchange_date
+    }
+
+    res.json({response:"ok", "db": data })
+    
+}));
+
+app.post("/api/insertPayment",  asyncHandler(async (req, res, next) => {
+    var payer = req.body.payer;
+    var payee = req.body.payee;
+    var amount = req.body.amount;
+    var dp = req.body.dp;
+    var currency = req.body.currency;
+    var paymentDesc = req.body.paymentDesc;
+
+    var sql = "insert into payment (payer, payee, amount, dp, currency, payment_desc, date_time) values "+
+    "('" + payer +"','" + payee  + "'," + amount + "," + dp +",'" + currency + "','" +  paymentDesc + "', NOW() " +")";	
+   
+    console.log(sql);
+     await insertDB( sql);
+  
+
+    res.json({response:"ok", "db": "payment inserted" })
+}));
+
+
+app.post("/api/checkPayment",  asyncHandler(async (req, res, next) => {
+    var payer = req.body.payer;
+    var sql =  "select payer, payee, amount, dp, currency, payment_desc, date_time from payment where payer = '" + payer +"' ";
+
+    var jsonHash = await checkDB(sql);
+    console.log('===============payment checked  ' + jsonHash[0]);
+    var str = JSON.stringify(jsonHash);
+    console.log(str);
+    var o ={};
+    o[0]=[];
+    var data= {
+        payer: jsonHash[0].payer,
+        payee: jsonHash[0].payee,
+        amount: jsonHash[0].amount,
+        currency: jsonHash[0].currency,
+        dp: jsonHash[0].dp,
+        payment_desc: jsonHash[0].payment_desc,
+        date_time: jsonHash[0].date_time
+    }
+
+    res.json({response:"ok", "db": data })
+}));
+
 
 app.post("/api/insertUser",  asyncHandler(async (req, res, next) => {
     var userName = req.body.userName;
@@ -127,12 +297,12 @@ app.post("/api/insertUser",  asyncHandler(async (req, res, next) => {
         });
     });
 	
-    res.json({response:"ok", "message": "Correct" })
+    res.json({response:"ok", "message": "inserted" })
 }));
 
-async function insertUserDB(username, passwordhash) {
+async function insertUserDB(userName, passwordHash) {
 
-    var sql = "insert into users (username, passwordhash) values ('" + username +"','" + passwordhash + "')";	
+    var sql = "insert into user_credential (user_name, password_hash) values ('" + userName +"','" + passwordHash + "')";	
     console.log(sql);
     await pool.query(
       sql,
@@ -145,12 +315,39 @@ async function insertUserDB(username, passwordhash) {
 
 }
 
-async function checkUserDB(username) {
+async function insertDB(sql) {
     console.log('check user db');
-    var sql = "select passwordhash from users where username = '" + username +"' ";
+  //  var sql = "select user_name from account where user_name = '" + userName +"' ";
     var res;
     try { 
-	res = await pool.query(sql);
+    res = await pool.query(sql);
+    pool.end;
+	return res.rows;
+    } catch (err) {
+        console.log(err);
+    }
+} 
+
+async function checkDB( sql) {
+    console.log('check user db');
+  //  var sql = "select user_name from account where user_name = '" + userName +"' ";
+    var res;
+    try { 
+    res = await pool.query(sql);
+    pool.end;
+	return res.rows;
+    } catch (err) {
+        console.log(err);
+    }
+}
+
+async function checkUserDB(userName) {
+    console.log('check user db');
+    var sql = "select password_hash from user_credential where user_name = '" + userName +"' ";
+    var res;
+    try { 
+    res = await pool.query(sql);
+    pool.end;
 	return res.rows;
     } catch (err) {
         console.log(err);
