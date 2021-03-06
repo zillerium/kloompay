@@ -1,5 +1,6 @@
 // Dependencies
 const fs = require('fs');
+var randomWords = require('random-words');
 const http = require('http');
 const https = require('https');
 
@@ -102,19 +103,53 @@ app.post("/api/getWalletList",  asyncHandler(async (req, res, next) => {
 
 app.post("/api/checkUser",  asyncHandler(async (req, res, next) => {
     var userName = req.body.userName;
-    var password = req.body.password;
+    var userPassword = req.body.userPassword;
     var jsonHash = await checkUserDB(userName);
     console.log('===============password checked  ' + jsonHash[0].password_hash);
     var str = JSON.stringify(jsonHash);
     console.log(str);
     var hash=jsonHash[0].password_hash;
-
-    bcrypt.compare(password, hash, async function(err, result) {
+    var result=true;
+    console.log("start");
+    await bcrypt.compare(userPassword, hash, async function(err, result) {
         console.log(result);
-    });
+        var words = await randomWords({ exactly: 5, join: ' ' })
+        console.log("1" + words)
+        var hashwords = await getHashWords(words)
+        console.log("2" + hashwords)
+        var sql = "update user_credential set user_session='"+ hashwords + "' where user_name='"+ userName + "'";
+        await insertDB(sql)
+        var data = {
+            result: result,
+            session: hashwords
+        }
+        console.log("end of response")
+	    res.json({response:"ok", "db": data })
 
-    res.json({response:"ok", "message": "Correct" })
+    });
+    console.log("end");
+//    res.json({response:"ok", "valid": result })
 }));
+
+async function getHashWords(words) {
+    const saltRound = 10;
+    const hashWords = await new Promise((resolve, reject) => {
+        bcrypt.hash(words, saltRound, function(err, hash) {
+            if (err) reject(err)
+            resolve(hash)
+        })
+    })
+ 
+    return hashWords;
+
+  //  await bcrypt.genSalt(saltRounds, async function(err, salt) {
+  //      await bcrypt.hash(words, salt, async function(err, hash) {
+  //          // Store hash in your password DB.
+  //          console.log("return 1a " + hash);
+  //          return hash;
+  //      });
+  //  });
+}
 
 app.post("/api/checkAccount",  asyncHandler(async (req, res, next) => {
     var userName = req.body.userName;
@@ -289,8 +324,8 @@ app.post("/api/insertUser",  asyncHandler(async (req, res, next) => {
     var userName = req.body.userName;
     var password = req.body.password;
 
-    bcrypt.genSalt(saltRounds, async function(err, salt) {
-        bcrypt.hash(password, salt, async function(err, hash) {
+    await genSalt(saltRounds, async function(err, salt) {
+        await bcrypt.hash(password, salt, async function(err, hash) {
             // Store hash in your password DB.
             console.log(hash);
             var res = await insertUserDB(userName, hash);
