@@ -101,6 +101,80 @@ app.post("/api/getWalletList",  asyncHandler(async (req, res, next) => {
     res.json({response:"ok", "message": "Correct", "doc": wallets.list})
 }));
 
+ app.post("/api/makePayment",  asyncHandler(async (req, res, next) => {
+    var userName = req.body.userName;
+    var userPassword = req.body.userPassword;
+    var payee = req.body.payee;
+    var amount = req.body.amount;
+    var currency = req.body.currency;
+    var dp = req.body.dp;
+    var paymentDesc = "direct payment";
+
+    var jsonHash = await checkUserDB(userName);
+   
+    paymentMsg = "no payment";
+    var passwordMatch = await checkHash(userPassword, hash);
+    var paid = false;
+    if (passwordMatch) {
+        var sql = "select balance from account where user_name='"+ userName + "' and currency = '" + currency + "'";
+        var jsonObj = await checkDB(sql);
+        if (jsonObj.length==0) {
+            paymentMsg = "no account in that currency " + currency;
+        } else {
+            var dbBal = jsonObj[0].balance;
+            if (dbBal >= amount) {
+                // minus the payer
+                // add the payee
+                // record the txn
+
+                sql = "insert into payment (payer, payee, amount, dp, currency, payment_desc, date_time) values "+
+                "('" + userName +"','" + payee  + "'," + amount + "," + dp +",'" + currency + "','" +  paymentDesc + "', NOW() " +")";	
+            
+                console.log(sql);
+                await insertDB( sql);
+                // check payee has an account in that currency, if not open 
+                sql = "select balance from account where user_name='"+ payee + "' and currency = '" + currency + "'";
+                jsonObj = await checkDB(sql);
+                if (jsonObj.length==0) {
+                    // open acct
+                      sql = "insert into account (user_name, balance, dp, currency) values "+
+                          "('" + payee + "'," + amount + "," + dp + ",'" + currency + "')";
+                        await insertDB(sql);  
+                } else {
+                    // credit acct    
+                    var bal = jsonObj[0].balance + balance;
+                      sql = "update account set balance = "+bal + " where user_name ='" + payee + "' and currency='"+ currency;
+                      await insertDB(sql);
+                }
+
+             
+                    // credit acct    
+                bal = dbBal - balance;
+                sql = "update account set balance = "+bal + " where user_name ='" + userName + "' and currency='"+ currency;
+                await insertDB(sql);
+                paid=true;
+
+            } else {
+                    paymentMsg = "insufficient balance in that currency " + dbBal;
+            }
+        }
+    } else {
+        paymentMsg = "invalid login";
+    }    
+    var data = {
+        result: passwordMatch,
+        paid: paid,
+        paymentMsg: paymentMsg
+    }
+    console.log("end of response")
+    res.json({response:"ok", "db": data })
+
+  
+   
+ }));
+ 
+ 
+
 app.post("/api/checkUser",  asyncHandler(async (req, res, next) => {
     var userName = req.body.userName;
     var userPassword = req.body.userPassword;
@@ -111,25 +185,54 @@ app.post("/api/checkUser",  asyncHandler(async (req, res, next) => {
     var hash=jsonHash[0].password_hash;
     var result=true;
     console.log("start");
-    await bcrypt.compare(userPassword, hash, async function(err, result) {
-        console.log(result);
-        var words = await randomWords({ exactly: 5, join: ' ' })
-        console.log("1" + words)
-        var hashwords = await getHashWords(words)
-        console.log("2" + hashwords)
-        var sql = "update user_credential set user_session='"+ hashwords + "' where user_name='"+ userName + "'";
-        await insertDB(sql)
+    var passwordMatch = await checkHash(userPassword, hash);
+    console.log("pwd " + passwordMatch)
+    if (passwordMatch) {
+           var words = await randomWords({ exactly: 5, join: ' ' })
+            console.log("1" + words)
+            var hashwords = await getHashWords(words)
+            console.log("2" + hashwords)
+            var sql = "update user_credential set user_session='"+ hashwords + "' where user_name='"+ userName + "'";
+            await insertDB(sql)
+        
         var data = {
-            result: result,
+            result: passwordMatch,
             session: hashwords
         }
         console.log("end of response")
 	    res.json({response:"ok", "db": data })
-
-    });
+    } else {
+        var data = {
+            result: passwordMatch,
+            session: ""
+        }
+        console.log("end of response2")
+	    res.json({response:"ok", "db": data })
+    }
+    
     console.log("end");
 //    res.json({response:"ok", "valid": result })
 }));
+
+async function checkHash(password, hash) {
+    console.log("start of compare")
+ //   bcrypt.compare(password, hash).then((result)=>{
+  //      console.log("return result in compare")
+   //     return result;
+
+   // })
+   // .catch((err)=>console.error(err))
+
+    const result = await new Promise((resolve, reject) => {
+        bcrypt.compare(password, hash, function(err, res) {
+            if (err) reject(err)
+            console.log ("return")
+            resolve(res)
+        })
+    })
+    return result;
+
+}
 
 async function getHashWords(words) {
     const saltRound = 10;

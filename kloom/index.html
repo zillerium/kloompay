@@ -1,98 +1,159 @@
- 
+
 <!doctype html>
 <html lang="en">
-   <head>
-      <meta charset="utf-8">
-      <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-      <meta name="description" content="">
-      <meta name="author" content="">
-      <script id="testscript" src="./kloom.js" type="text/javascript"></script>
-      <link rel="icon" href="/docs/4.0/assets/img/favicons/favicon.ico">
-      <title>KloomPay - Global Instant Payments </title>
-      <!-- Bootstrap core CSS -->
-      <link href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css" rel="stylesheet">
-      <!-- Custom styles for this template -->
-      <script src="https://code.jquery.com/jquery-1.12.4.min.js" integrity="sha384-nvAa0+6Qg9clwYCGGPpDQLVpLNn0fRaROjHqs13t4Ggj3Ez50XnGQqc/r8MhnRDZ" crossorigin="anonymous"></script>
-      <!-- Include all compiled plugins (below), or include individual files as needed -->
-      <script src="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha384-aJ21OjlMXNL5UyIl/XNwTMqvzeRMZH2w8c5cRVpzpU8Y5bApTppSuUkhZXN0VxHd" crossorigin="anonymous"></script>
-      <script type="text/javascript">
-        const queryString = window.location.search
-        console.log(queryString);
-        
-        const urlParams = new URLSearchParams(queryString);
-        
-        const store = urlParams.get('store')
-        const amount = urlParams.get('amount')
-        
-        console.log(store);
-        console.log(amount);
-     </script>
-    </head>
-   <body >
-      <div class="container">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="favicon.ico">
+
+    <title>Kloompay - Global Instant Payments</title>
+
+    <link rel="canonical" href="https://getbootstrap.com/docs/4.0/examples/navbars/">
+
+    <!-- Bootstrap core CSS -->
+    <link href="https://getbootstrap.com/docs/4.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link href="kloom.css" rel="stylesheet">
+
+  </head>
+
+  <body>
+
    
-              
-         <div class="row" style="margin-bottom: 10px">
-            <div class="col-md-12">
-               <img src="kloomlogo.png" class="img-fluid">
-            </div>
-         </div>
-      
 
-      
+   
 
-         <div class="row">
-            <div class="col-md-4"></div>
-            <div class="col-md-3">
-               <input type="text" id="kloomLogin" class="form-control" name="login" placeholder="user name"> 
-            </div> 
-            <div class="col-md-5"></div>
-         </div> 
-         <div class="row">
-            <div class="col-md-4"></div>
-            <div class="col-md-3"> 
- 
-                <input type="password" id="kloomPassword" class="form-control" name="login" placeholder="password">
-            </div>
-            <div class="col-md-5"></div>
+   
 
-          </div>
-          <div class="row">
-              <div class="col-md-4"></div>
-            <div class="col-md-3">
-                <button id="kloomsubmit"  class="w-100 btn btn-primary"
-               type="button" onclick="kloomlogin()"> Login </button>
-            </div>
-            <div class="col-md-5"></div>
+    <nav class="navbar navbar-expand-md navbar-light  bg-light">
+            <a class="navbar-brand" href="https://kloompay.com">  <img src="kloomlogo1.png" class="img-fluid"> </a>
+            
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExample04" aria-controls="navbarsExample04" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
 
-          </div>
-          
-          
-
-
-        <div class="row" style="margin-top: 10px">
-            <div class="col-md-3"> </div> 
-          <div class="col-md-1">Pay </div> 
-          <div class="col-md-1"> 
-            <input type="text" class="form-control" 
-                id="store" aria-label="store"
-                aria-describedby="store">
-          </div>
-          <div class="col-md-1"><input type="text" class="form-control"
-             id="amount" aria-label="amount"
-             aria-describedby="amount">
-          </div>
-          <div class="col-md-2"> Dollars</div> 
-          <div class="col-md-4"> </div> 
-       </div>
-    
-
-
-      </div>
-      <script type="text/javascript">
-        document.getElementById("store").value = store;
-        document.getElementById("amount").value = amount;
+      <div class="collapse navbar-collapse" id="navbarsExample04">
+        <ul class="navbar-nav mr-auto">
                 
-     </script>
-   </body>
+         
+
+          <li class="nav-item ">
+                <a class="nav-link" href="https://kloompay.com/signup.html"><button type="button" class="btn btn-outline-dark">Signup</button> </a>
+              </li>
+              <li class="nav-item"> 
+                <a class="nav-link" href="https://kloompay.com/login.html"><button type="button" class="btn btn-primary">Login</button> </span></a>
+              </li>
+            
+                <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="https://kloompay.com" id="dropdown03" 
+                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Payments</a>
+                        <div class="dropdown-menu" aria-labelledby="dropdown03">
+                          <a class="dropdown-item" href="pay.html">Pay</a>
+                       
+                        </div>
+                </li>
+          
+         
+        </ul>
+        
+      </div>
+
+     
+    
+  
+
+    </nav>
+
+   
+    <div class="container">
+   
+      
+                
+         
+   
+                 
+               <div class="row bg-warning  ">
+                    
+                     <div class="col-md-6">
+                          <img src="phonedisplay.jpg" class="img-fluid">
+                     </div>
+                     <div class="col-md-6  ">
+                           <h1>Personalised Wallets</h1>
+                           <p>Global, Instant, Any Currency</p>
+                         </div>
+         
+                 </div>
+      
+                 <div class="row  bg-primary ">
+                     <div class="col-md-12  text-center">
+                       <h1 class="text-light">No bank needed</h1>
+                        </div>
+                    
+                   
+         
+                 </div>
+           
+            <div class="row   ">
+                <div class="col-md-6  ">
+                  <h1>Pay Anyone Anywhere</h1>
+                  <p>Pay anyone from any location using the Kloompay wallet without a bank using a stablecoin.</p>
+                </div>
+                <div class="col-md-6">
+                     <img src="payexample.png" class="img-fluid">
+                </div>
+              
+    
+            </div>
+          
+            <div class="row">
+                  <div class="col-md-6">
+                        <img src="clock.png" class="img-fluid">
+                   </div>
+                  <div class="col-md-6">
+                    <h1>Instant Payments</h1>
+                    <p>All stablecoin payments are instant and global. Send money home, pay for goods, or transfer to friends.</p>
+                  </div>
+                
+                
+      
+              </div>
+   
+              <div class="row">
+                  <div class="col-md-6">
+                        <h1>Top Up</h1>
+                        <p>Top up in stores by converting cash into stablecoins.</p>
+                      </div>
+                  <div class="col-md-6">
+                        <img src="store.png" class="img-fluid">
+                   </div>
+              </div>
+   
+              <div class="row">
+                  <div class="col-md-6">
+                        <img src="crypto.png" class="img-fluid">
+                   </div>
+                  <div class="col-md-6">
+                        <h1>Multi-Currency</h1>
+                        <p>Pay via cryptocurrency and multiple currencies.</p>
+                      </div>
+                
+              </div>
+   
+       
+        
+         </div>
+ 
+ 
+
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script>window.jQuery || document.write('<script src="../../assets/js/vendor/jquery-slim.min.js"><\/script>')</script>
+    <script src="https://getbootstrap.com/docs/4.0/assets/js/vendor/popper.min.js"></script>
+    <script src="https://getbootstrap.com/docs/4.0/dist/js/bootstrap.min.js"></script>
+  </body>
 </html>
