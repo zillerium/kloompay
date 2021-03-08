@@ -14,7 +14,8 @@ function kloomlogin() {
             if (data.db.result) {
                 processLogin(userName, data.db.session);
 	        } else {
-                processFailedLogin();
+                document.getElementById("message").innerHTML="Password wrong";
+
             }
         
         } else {
@@ -22,6 +23,43 @@ function kloomlogin() {
 	    }
       }
     };
+}
+
+function kloomSignup() {
+    userName  = document.getElementById("kloomLogin").value;
+    userPassword  = document.getElementById("kloomPassword").value;
+    
+    var xhttp = new XMLHttpRequest();
+	
+    xhttp.open("POST",  "https://kloompay.com:3000/api/insertUser", true);
+    xhttp.setRequestHeader("Content-Type", "application/json; charset=utf-8");
+    xhttp.send(JSON.stringify({ "userName": userName, "userPassword": userPassword }));
+    xhttp.onreadystatechange = function(){
+    if (this.readyState == 4 && this.status == 200) {
+        var data = JSON.parse(this.response);
+        if (data.response === "ok") {
+            document.getElementById("message").innerHTML="Your user name was registered";
+        
+        } else {
+              document.getElementById("message").innerHTML="There was an error";
+	    }
+      }
+    };
+}
+
+function currencyLookup(currencies, currency, prop){
+    // Only change code below this line
+    for(var i =0;i<currencies.length;i++){
+        if (currencies[i].currency===currency){
+            if(currencies[i].hasOwnProperty(prop)===true){
+                return currencies[i][prop];
+            }
+            else {
+                return "No such property";
+            }
+        }
+    }
+    return 0;
 }
 
 function kloompay() {
@@ -30,23 +68,51 @@ function kloompay() {
     payee  = document.getElementById("payee").value;
     amount  = document.getElementById("amount").value;
     currency  = document.getElementById("currency").value;
+    fromcurrency  = document.getElementById("fromcurrency").value;
     returnUrl  = document.getElementById("returnUrl").value;
- 
-  
+    order  = document.getElementById("order").value;
 
+    // only handle non-exchange at v1
+  
+    var currencies = [
+        {
+            "currency": "USDC",
+            "dp": 2
+        },
+        {
+            "currency": "BTC",
+            "dp": 8
+        }
+    ];
+    
+    if (currency == "USDC") {
+        amount = amount * 100;
+    }
+
+    if (currency == "BTC") {
+        amount = amount * 100000000;
+    }
+
+
+    var dp = currencyLookup(currencies,currency, "dp");
+   
+    //No such contact
+    console.log(currencyLookup(currency, "dp"));
+    
+     
     var xhttp = new XMLHttpRequest();
 	
     xhttp.open("POST",  "https://kloompay.com:3000/api/makePayment", true);
     xhttp.setRequestHeader("Content-Type", "application/json; charset=utf-8");
-    xhttp.send(JSON.stringify({ "userName": userName, "userPassword": userPassword, "payee": payee, "amount": amount, "currency": currency, "dp": dp}));
+    xhttp.send(JSON.stringify({"order": order, "userName": userName, "userPassword": userPassword, "payee": payee, "amount": amount, "currency": currency, "dp": dp}));
     xhttp.onreadystatechange = function(){
     if (this.readyState == 4 && this.status == 200) {
         var data = JSON.parse(this.response);
         if (data.response === "ok") {
             if (data.db.result) {
-                paymentMade(returnUrl);
+                paymentMade(returnUrl, order);
 	        } else {
-                paymentFailed();
+                document.getElementById("message").innerHTML="password error";
             }
         
         } else {
@@ -57,12 +123,12 @@ function kloompay() {
 }
 
 
-function paymentMade(returnUrl) {
+function paymentMade(returnUrl, orderDesc) {
     
     if (returnUrl === "") {
-         // show message
+        document.getElementById("message").innerHTML="payment done";
     }  else {
-        // redirect with status code
+        window.location = "http://"+ returnUrl+"?order="+orderDesc+ "&paid=true";
     }
 }
     
@@ -74,7 +140,7 @@ function paymentFailed() {
 function processLogin(userName, session) {
 document.cookie = "session="+session;
  
-window.location = "https://kloompay.com/dashboard.html"
+window.location = "https://kloompay.com/dashboard.html?username='"+ userName + "'";
 
 }
 

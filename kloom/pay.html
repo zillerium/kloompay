@@ -155,6 +155,11 @@
                     id="returnUrl" aria-label="returnUrl"
                     aria-describedby="returnUrl">
               </div>
+              <div class="col-md-3"> 
+                    <input type="text" class="form-control" 
+                        id="order" aria-label="order"
+                        aria-describedby="order">
+                  </div>
               
            </div>
 
@@ -163,6 +168,11 @@
              
   
             </div>
+            <div class="row">
+                    <div class="col-md-12"><p id=message1>Demo accts - trevor, flashlight; password = john or john1</p></div>
+                 
+      
+                </div>
    
          </div>
 
@@ -189,11 +199,13 @@
         var fromcurrency = urlParams.get('fromcurrency')
 
         var returnUrl = urlParams.get('returnUrl')
+        var order = urlParams.get('order')
     document.getElementById("payee").value = store;
     document.getElementById("amount").value = amount;
     document.getElementById("currency").value = currency.toUpperCase(); 
     document.getElementById("fromcurrency").value = fromcurrency.toUpperCase(); 
-    document.getElementById("returnUrl").value = "";        
+    document.getElementById("returnUrl").value = returnUrl;        
+    document.getElementById("order").value = order;        
 
  </script>
 </html>
