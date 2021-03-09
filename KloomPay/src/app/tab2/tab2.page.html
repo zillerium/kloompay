@@ -1,7 +1,7 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
     <ion-title>
-      Card
+      Payments
     </ion-title>
   </ion-toolbar>
 </ion-header>
@@ -9,8 +9,22 @@
 <ion-content [fullscreen]="true">
   <ion-header collapse="condense">
     <ion-toolbar>
-      <ion-title size="large">Tab 2</ion-title>
+      <ion-title size="large">Payments</ion-title>
     </ion-toolbar>
   </ion-header>
 
+
+  <ion-row>
+    <ion-col>
+      <ion-card>
+        <ion-card-content> 
+          <ion-input type="text" placeholder="User name" #title> </ion-input>
+          <ion-input type="text" placeholder="Password" #imageURL> </ion-input> 
+          <ion-button color="primary" > Pay </ion-button>
+        </ion-card-content>
+      </ion-card>
+    </ion-col>
+  </ion-row>
+
+  
 </ion-content>

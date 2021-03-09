@@ -1,5 +1,7 @@
 {
   "name": "KloomPay",
-  "integrations": {},
+  "integrations": {
+    "cordova": {}
+  },
   "type": "angular"
 }
