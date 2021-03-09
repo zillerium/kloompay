@@ -147,7 +147,7 @@ function kloomlogin() {
     document.cookie = "session=" + session;
   
     window.location =
-      "https://kloompay.com/dashboard.html?username='" + userName + "'";
+      "https://kloompay.com/dashboard.html?userName=" + userName + "";
   }
   
   function processFailedLogin() {}
