@@ -1,211 +1,257 @@
-
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
   <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="description" content="">
-    <meta name="author" content="">
-    <link rel="icon" href="favicon.ico">
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
+    <meta name="description" content="" />
+    <meta name="author" content="" />
+    <link rel="icon" href="favicon.ico" />
 
-    <title>Kloompay Login - Global Instant Payments</title>
+    <title>Kloompay Pay - Global Instant Payments</title>
 
-    <link rel="canonical" href="https://getbootstrap.com/docs/4.0/examples/navbars/">
+    <link
+      rel="canonical"
+      href="https://getbootstrap.com/docs/4.0/examples/navbars/"
+    />
     <script id="testscript" src="./kloom.js" type="text/javascript"></script>
 
     <!-- Bootstrap core CSS -->
-    <link href="https://getbootstrap.com/docs/4.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link
+      href="https://getbootstrap.com/docs/4.0/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
 
     <!-- Custom styles for this template -->
-    <link href="kloom.css" rel="stylesheet">
+    <link href="kloom.css" rel="stylesheet" />
     <script type="text/javascript">
-   //    const queryString = window.location.search
-   //     console.log(queryString);
-        
-   //     const urlParams = new URLSearchParams(queryString);
-        
-    //    const store = urlParams.get('store')
-    //    const amount = urlParams.get('amount')
-    //    const currency = urlParams.get('currency')
-    //    const returnUrl = urlParams.get('returnUrl')
+      //    const queryString = window.location.search
+      //     console.log(queryString);
 
-    //    console.log(store);
-    //    console.log(amount);
-     </script>
+      //     const urlParams = new URLSearchParams(queryString);
+
+      //    const store = urlParams.get('store')
+      //    const amount = urlParams.get('amount')
+      //    const currency = urlParams.get('currency')
+      //    const returnUrl = urlParams.get('returnUrl')
+
+      //    console.log(store);
+      //    console.log(amount);
+    </script>
   </head>
 
   <body>
+    <nav class="navbar navbar-expand-md navbar-light bg-light">
+      <a class="navbar-brand" href="https://kloompay.com">
+        <img src="kloomlogo1.png" class="img-fluid" />
+      </a>
 
-   
-
-   
-
-   
-
-    <nav class="navbar navbar-expand-md navbar-light  bg-light">
-            <a class="navbar-brand" href="https://kloompay.com">  <img src="kloomlogo1.png" class="img-fluid"> </a>
-            
-      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExample04" aria-controls="navbarsExample04" aria-expanded="false" aria-label="Toggle navigation">
+      <button
+        class="navbar-toggler"
+        type="button"
+        data-toggle="collapse"
+        data-target="#navbarsExample04"
+        aria-controls="navbarsExample04"
+        aria-expanded="false"
+        aria-label="Toggle navigation"
+      >
         <span class="navbar-toggler-icon"></span>
       </button>
 
       <div class="collapse navbar-collapse" id="navbarsExample04">
         <ul class="navbar-nav mr-auto">
-                
-         
+          <li class="nav-item">
+            <a class="nav-link" href="https://kloompay.com/signup.html"
+              ><button type="button" class="btn btn-outline-dark">
+                Signup
+              </button>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="https://kloompay.com/login.html"
+              ><button type="button" class="btn btn-primary">Login</button></a
+            >
+          </li>
 
-          <li class="nav-item ">
-                <a class="nav-link" href="https://kloompay.com/signup.html"><button type="button" class="btn btn-outline-dark">Signup</button> </a>
-              </li>
-              <li class="nav-item"> 
-                <a class="nav-link" href="https://kloompay.com/login.html"><button type="button" class="btn btn-primary">Login</button> </span></a>
-              </li>
-            
-                <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="https://kloompay.com" 
-                        id="dropdown03" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Payments</a>
-                        <div class="dropdown-menu" aria-labelledby="dropdown03">
-                          <a class="dropdown-item" href="pay.html">Pay</a>
-                       
-                        </div>
-                </li>
-          
-         
+          <li class="nav-item dropdown">
+            <a
+              class="nav-link dropdown-toggle"
+              href="https://kloompay.com"
+              id="dropdown03"
+              data-toggle="dropdown"
+              aria-haspopup="true"
+              aria-expanded="false"
+              >Payments</a
+            >
+            <div class="dropdown-menu" aria-labelledby="dropdown03">
+              <a class="dropdown-item" href="pay.html">Pay</a>
+            </div>
+          </li>
         </ul>
-        
       </div>
-
-     
-    
-  
-
     </nav>
 
-   
     <div class="container">
-   
-              
-        
-         
-   
-            <div class="row">
-               <div class="col-md-4"></div>
-               <div class="col-md-3">
-                  <input type="text" id="kloomLogin" class="form-control" name="login" placeholder="user name"> 
-               </div> 
-               <div class="col-md-5"></div>
-            </div> 
-            <div class="row">
-               <div class="col-md-4"></div>
-               <div class="col-md-3"> 
-    
-                   <input type="password" id="kloomPassword" class="form-control" name="login" placeholder="password">
-               </div>
-               <div class="col-md-5"></div>
-   
-             </div>
-             <div class="row">
-                 <div class="col-md-4"></div>
-               <div class="col-md-3">
-                   <button id="kloomsubmit"  class="w-100 btn btn-primary"
-                  type="button" onclick="kloompay()"> Pay </button>
-               </div>
-               <div class="col-md-5"></div>
-   
-             </div>
-             
-             
-   
-   
-           <div class="row" style="margin-top: 10px">
-               <div class="col-md-3"> </div> 
-             <div class="col-md-1">Pay </div> 
-             <div class="col-md-1"> 
-               <input type="text" class="form-control" 
-                   id="payee" aria-label="payee"
-                   aria-describedby="payee">
-             </div>
-             <div class="col-md-1"> the Sum </div> 
-             <div class="col-md-1"><input type="text" class="form-control"
-                id="amount" aria-label="amount"
-                aria-describedby="amount">
-             </div>
-             <div class="col-md-1"> in </div> 
-             <div class="col-md-1"> 
-                    <select class="form-select" id=currency aria-label="Default select example">
-                            <option value="USDC">USDC</option>
-                            <option value="BTC">BTC</option>
-                    </select>
-             </div> 
-             <div class="col-md-1"> From </div> 
-             <div class="col-md-1"> 
-                    <select class="form-select" id=fromcurrency aria-label="Default select example">
-                            <option value="USDC">USDC</option>
-                            <option value="BTC">BTC</option>
-                    </select>
-             </div> 
-             <div class="col-md-1"> </div> 
-          </div>
-       
-          <div class="row" style="margin-top: 10px">
-                <div class="col-md-3"> </div> 
-            
-              <div class="col-md-3"> 
-                <input type="text" class="form-control" 
-                    id="returnUrl" aria-label="returnUrl"
-                    aria-describedby="returnUrl">
-              </div>
-              <div class="col-md-3"> 
-                    <input type="text" class="form-control" 
-                        id="order" aria-label="order"
-                        aria-describedby="order">
-                  </div>
-              
-           </div>
+      <div class="row">
+        <div class="col-md-4"></div>
+        <div class="col-md-3">
+          <input
+            type="text"
+            id="kloomLogin"
+            class="form-control"
+            name="login"
+            placeholder="user name"
+          />
+        </div>
+        <div class="col-md-5"></div>
+      </div>
+      <div class="row">
+        <div class="col-md-4"></div>
+        <div class="col-md-3">
+          <input
+            type="password"
+            id="kloomPassword"
+            class="form-control"
+            name="login"
+            placeholder="password"
+          />
+        </div>
+        <div class="col-md-5"></div>
+      </div>
+      <div class="row">
+        <div class="col-md-4"></div>
+        <div class="col-md-3">
+          <button
+            id="kloomsubmit"
+            class="w-100 btn btn-primary"
+            type="button"
+            onclick="kloompay()"
+          >
+            Pay
+          </button>
+        </div>
+        <div class="col-md-5"></div>
+      </div>
 
-           <div class="row">
-                <div class="col-md-12"><p id=message></p></div>
-             
-  
-            </div>
-            <div class="row">
-                    <div class="col-md-12"><p id=message1>Demo accts - trevor, flashlight; password = john or john1</p></div>
-                 
-      
-                </div>
-   
-         </div>
+      <div class="row" style="margin-top: 10px">
+        <div class="col-md-3"></div>
+        <div class="col-md-1">Pay</div>
+        <div class="col-md-1">
+          <input
+            type="text"
+            class="form-control"
+            id="payee"
+            aria-label="payee"
+            aria-describedby="payee"
+          />
+        </div>
+        <div class="col-md-1">the Sum</div>
+        <div class="col-md-1">
+          <input
+            type="text"
+            class="form-control"
+            id="amount"
+            aria-label="amount"
+            aria-describedby="amount"
+          />
+        </div>
+        <div class="col-md-1">in</div>
+        <div class="col-md-1">
+          <select
+            class="form-select"
+            id="currency"
+            aria-label="Default select example"
+          >
+            <option value="USDC">USDC</option>
+            <option value="BTC">BTC</option>
+          </select>
+        </div>
+        <div class="col-md-1">From</div>
+        <div class="col-md-1">
+          <select
+            class="form-select"
+            id="fromcurrency"
+            aria-label="Default select example"
+          >
+            <option value="USDC">USDC</option>
+            <option value="BTC">BTC</option>
+          </select>
+        </div>
+        <div class="col-md-1"></div>
+      </div>
 
- 
- 
+      <div class="row" style="margin-top: 10px">
+        <div class="col-md-3"></div>
+
+        <div class="col-md-3">
+          <input
+            type="text"
+            class="form-control"
+            id="returnUrl"
+            aria-label="returnUrl"
+            aria-describedby="returnUrl"
+          />
+        </div>
+        <div class="col-md-3">
+          <input
+            type="text"
+            class="form-control"
+            id="order"
+            aria-label="order"
+            aria-describedby="order"
+          />
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-md-12"><p id="message"></p></div>
+      </div>
+      <div class="row">
+        <div class="col-md-12">
+          <p id="message1">
+            Demo accts - trevor, flashlight; password = john or john1
+          </p>
+        </div>
+      </div>
+    </div>
 
     <!-- Bootstrap core JavaScript
     ================================================== -->
     <!-- Placed at the end of the document so the pages load faster -->
-    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
-    <script>window.jQuery || document.write('<script src="https://getbootstrap.com/docs/4.0/assets/js/vendor/jquery-slim.min.js"><\/script>')</script>
+    <script
+      src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+      integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+      crossorigin="anonymous"
+    ></script>
+    <script>
+      window.jQuery ||
+        document.write(
+          '<script src="https://getbootstrap.com/docs/4.0/assets/js/vendor/jquery-slim.min.js"><\/script>'
+        );
+    </script>
     <script src="https://getbootstrap.com/docs/4.0/assets/js/vendor/popper.min.js"></script>
     <script src="https://getbootstrap.com/docs/4.0/dist/js/bootstrap.min.js"></script>
   </body>
   <script type="text/javascript">
-   const queryString = window.location.search
-        console.log(queryString);
-        
-        var urlParams = new URLSearchParams(queryString);
-        
-        var store = urlParams.get('store')
-        var amount = urlParams.get('amount')
-        var currency = urlParams.get('currency')
-        var fromcurrency = urlParams.get('fromcurrency')
+    const queryString = window.location.search;
+    console.log(queryString);
 
-        var returnUrl = urlParams.get('returnUrl')
-        var order = urlParams.get('order')
+    var urlParams = new URLSearchParams(queryString);
+
+    var store = urlParams.get("store");
+    var amount = urlParams.get("amount");
+    var currency = urlParams.get("currency");
+    var fromcurrency = urlParams.get("fromcurrency");
+
+    var returnUrl = urlParams.get("returnUrl");
+    var order = urlParams.get("order");
     document.getElementById("payee").value = store;
     document.getElementById("amount").value = amount;
-    document.getElementById("currency").value = currency.toUpperCase(); 
-    document.getElementById("fromcurrency").value = fromcurrency.toUpperCase(); 
-    document.getElementById("returnUrl").value = returnUrl;        
-    document.getElementById("order").value = order;        
-
- </script>
+    document.getElementById("currency").value = currency.toUpperCase();
+    document.getElementById("fromcurrency").value = fromcurrency.toUpperCase();
+    document.getElementById("returnUrl").value = returnUrl;
+    document.getElementById("order").value = order;
+  </script>
 </html>
