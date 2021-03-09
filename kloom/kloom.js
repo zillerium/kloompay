@@ -145,11 +145,12 @@ function kloomlogin() {
   
   function processLogin(userName, session) {
     document.cookie = "session=" + session;
+    document.cookie = 'sessionuser=' + userName;
   
     window.location =
-      "https://kloompay.com/dashboard.html?userName=" + userName + "";
+      "https://kloompay.com/dashboard.html?userName=" + userName;
   }
-  
+
   function processFailedLogin() {}
 
 function getCookie(name) {
@@ -163,10 +164,9 @@ function getUrlQueryParam(key) {
   return url.searchParams.get(key);
 }
 
-
 function checkIsLoggedIn (cb) {
   var sessionid = getCookie('session');
-  var userName = getUrlQueryParam('userName');
+  var userName = getCookie('sessionuser');
 
   var xhttp = new XMLHttpRequest();
   xhttp.open("POST",  "https://kloompay.com:3000/api/checkSessionId", true);
@@ -177,10 +177,20 @@ function checkIsLoggedIn (cb) {
       var data = JSON.parse(this.response);
       console.log(data);
       if (data.response === "ok" && data.valid === true) {
-          cb();
+          if (cb) {
+            cb();
+          }
+          for (var el of document.querySelectorAll('.show-auth')) {
+            el.style.display = 'initial';
+          }
+          document.getElementById('auth-username').innerText = userName;
+          return
       } else {
           document.getElementById("message").innerHTML="There was an error";
+      }
     }
+    for (var el of document.querySelectorAll('.hide-auth')) {
+      el.style.display = 'none';
     }
   };
 }
