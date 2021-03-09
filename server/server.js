@@ -106,17 +106,18 @@ app.post("/api/getWalletList",  asyncHandler(async (req, res, next) => {
     var userPassword = req.body.userPassword;
     var payee = req.body.payee;
     var amount = req.body.amount;
-    var currency = req.body.currency;
+    var currency = req.body.currency.toUpperCase();
     var dp = req.body.dp;
-    var paymentDesc = "direct payment";
+    var paymentDesc = req.body.order;
 
     var jsonHash = await checkUserDB(userName);
-   
+    var hash=jsonHash[0].password_hash;
     paymentMsg = "no payment";
     var passwordMatch = await checkHash(userPassword, hash);
     var paid = false;
     if (passwordMatch) {
         var sql = "select balance from account where user_name='"+ userName + "' and currency = '" + currency + "'";
+        console.log("sql = " + sql)      
         var jsonObj = await checkDB(sql);
         if (jsonObj.length==0) {
             paymentMsg = "no account in that currency " + currency;
@@ -142,15 +143,15 @@ app.post("/api/getWalletList",  asyncHandler(async (req, res, next) => {
                         await insertDB(sql);  
                 } else {
                     // credit acct    
-                    var bal = jsonObj[0].balance + balance;
-                      sql = "update account set balance = "+bal + " where user_name ='" + payee + "' and currency='"+ currency;
+                    var bal = jsonObj[0].balance + amount;
+                      sql = "update account set balance = "+bal + " where user_name ='" + payee + "' and currency='"+ currency + "'";
                       await insertDB(sql);
                 }
 
              
                     // credit acct    
-                bal = dbBal - balance;
-                sql = "update account set balance = "+bal + " where user_name ='" + userName + "' and currency='"+ currency;
+                bal = dbBal - amount;
+                sql = "update account set balance = "+bal + " where user_name ='" + userName + "' and currency='"+ currency + "'";
                 await insertDB(sql);
                 paid=true;
 
@@ -174,6 +175,24 @@ app.post("/api/getWalletList",  asyncHandler(async (req, res, next) => {
  }));
  
  
+ app.post("/api/checkSessionId",  asyncHandler(async (req, res, next) => {
+    var userName = req.body.userName;
+    var sessionid = req.body.sessionid;
+    sessionid = sessionid.replace(/'/g,"")
+    console.log(sessionid)
+    var sql = "select user_name from user_credential where user_session = '" + sessionid + "' and user_name = '" + userName + "'";
+    console.log(sql)
+    var jsonHash = await checkDB(sql);
+    var sessionIdValid = false;
+    if (jsonHash.length == 0 ) {
+        sessionIdValid = false;
+    } else {
+        sessionIdValid=true;
+    }
+      
+    res.json({response:"ok", "valid": sessionIdValid })
+}));
+
 
 app.post("/api/checkUser",  asyncHandler(async (req, res, next) => {
     var userName = req.body.userName;
@@ -236,7 +255,7 @@ async function checkHash(password, hash) {
 
 async function getHashWords(words) {
     const saltRound = 10;
-    const hashWords = await new Promise((resolve, reject) => {
+    var hashWords = await new Promise((resolve, reject) => {
         bcrypt.hash(words, saltRound, function(err, hash) {
             if (err) reject(err)
             resolve(hash)
@@ -398,6 +417,85 @@ app.post("/api/insertPayment",  asyncHandler(async (req, res, next) => {
     res.json({response:"ok", "db": "payment inserted" })
 }));
 
+app.post("/api/getAccounts",  asyncHandler(async (req, res, next) => {
+   
+
+    var sql =  "select user_name, balance, dp, currency from account";
+
+    var jsonHash = await checkDB(sql);
+  
+
+    res.json({response:"ok", "db": jsonHash })
+}));
+
+app.post("/api/getUserAccount",  asyncHandler(async (req, res, next) => {
+    var userName = req.body.userName;
+
+    var sql =  "select user_name, balance, dp, currency from account where user_name = '" + userName + "'";
+    app.post("/api/getAccounts",  asyncHandler(async (req, res, next) => {
+   
+
+        var sql =  "select user_name, balance, dp, currency from account";
+    
+        var jsonHash = await checkDB(sql);
+      
+    
+        res.json({response:"ok", "db": jsonHash })
+    }));
+    var jsonHash = await checkDB(sql);
+  
+
+    res.json({response:"ok", "db": jsonHash })
+}));
+
+app.post("/api/getPayerPayments",  asyncHandler(async (req, res, next) => {
+    var payer = req.body.payer;
+
+    var sql =  "select payer, payee, amount, dp, currency, payment_desc, date_time from payment where payer = '" + payer + "'";
+
+    var jsonHash = await checkDB(sql);
+  
+
+    res.json({response:"ok", "db": jsonHash })
+}));
+
+
+app.post("/api/getPayeePayments",  asyncHandler(async (req, res, next) => {
+    var payee = req.body.payee;
+
+    var sql =  "select payer, payee, amount, dp, currency, payment_desc, date_time from payment where payee = '" + payee + "'";
+console.log(sql)
+    var jsonHash = await checkDB(sql);
+    
+ 
+
+    res.json({response:"ok", "db": jsonHash })
+}));
+
+
+app.post("/api/getPayments",  asyncHandler(async (req, res, next) => {
+   
+    var sql =  "select payer, payee, amount, dp, currency, payment_desc, date_time from payment";
+
+    var jsonHash = await checkDB(sql);
+    console.log('===============payment checked  ' + jsonHash[0]);
+    var str = JSON.stringify(jsonHash);
+    console.log(str);
+    var o ={};
+    o[0]=[];
+    var data= {
+        payer: jsonHash[0].payer,
+        payee: jsonHash[0].payee,
+        amount: jsonHash[0].amount,
+        currency: jsonHash[0].currency,
+        dp: jsonHash[0].dp,
+        payment_desc: jsonHash[0].payment_desc,
+        date_time: jsonHash[0].date_time
+    }
+
+    res.json({response:"ok", "db": jsonHash })
+}));
+
 
 app.post("/api/checkPayment",  asyncHandler(async (req, res, next) => {
     var payer = req.body.payer;
@@ -422,18 +520,24 @@ app.post("/api/checkPayment",  asyncHandler(async (req, res, next) => {
     res.json({response:"ok", "db": data })
 }));
 
+  
+
 
 app.post("/api/insertUser",  asyncHandler(async (req, res, next) => {
     var userName = req.body.userName;
-    var password = req.body.password;
+    var password = req.body.userPassword;
 
-    await genSalt(saltRounds, async function(err, salt) {
-        await bcrypt.hash(password, salt, async function(err, hash) {
-            // Store hash in your password DB.
-            console.log(hash);
-            var res = await insertUserDB(userName, hash);
-        });
-    });
+    console.log("pre-hash")
+    
+    var hash = await getHashWords(password);
+
+    console.log("after hash")
+
+    var jsonObj = await insertUserDB(userName, hash);
+
+    console.log("end processing")
+
+  
 	
     res.json({response:"ok", "message": "inserted" })
 }));
