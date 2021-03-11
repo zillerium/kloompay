@@ -1,0 +1,19 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>
+      QR Code
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true" >
+
+
+<ngx-qrcode 
+  [elementType]="elementType" 
+  [value]="info.bcrypt"
+  cssClass="aclass"
+  errorCorrectionLevel="L">
+</ngx-qrcode>
+
+</ion-content>
